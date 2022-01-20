@@ -2,15 +2,9 @@ import Constants from "./apikey.js";
 import displayCardCustom from "./card.js";
 import displayModalCustom from "./modal.js";
 
-var arrayOfSearch = Constants.MY_SEARCH.Search;
 var myKey = Constants.MY_KEY;
-var testMovie = Constants.MY_MOVIE;
-var searchButtun = document.getElementById('search');
-// todo(arrayOfSearch);
 
-// fetch('https://www.omdbapi.com/?apikey=445a0d29&s=batman')
-//   .then(res => res.json())
-//   .then(data => todo(data))
+var searchButtun = document.getElementById('search');
 searchButtun.addEventListener("click",searchMovies);
 
 //searchContent
@@ -97,10 +91,3 @@ function modalModal(){
   }
   //FIN MODAL
 }
-
-//TODO
-
-//creer la requette api de recherche
-//créer l'event listener qui lance la requete
-//crere l'affichage pour toutes les réponses
-//faire le scroll
