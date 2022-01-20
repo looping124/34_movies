@@ -6,6 +6,7 @@ export default function displayModalCustom(movie,modal){
   <div class="modal-to-remove" id="modal-to-remove">
     <img class="modal-img" src="${movie.Poster}" alt="Card image cap">    
     <h5 class="card-title">${movie.Title}</h5>
+    <p>${movie.Plot}</p>
     </div>
   `);
   modal.style.display = "block";

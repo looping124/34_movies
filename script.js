@@ -1,66 +1,106 @@
 import Constants from "./apikey.js";
 import displayCardCustom from "./card.js";
 import displayModalCustom from "./modal.js";
-//http://www.omdbapi.com/?apikey=[yourkey]&
-//https://www.omdbapi.com/?apikey=445a0d29&t=super
-//https://www.omdbapi.com/?apikey=445a0d29&s=harry
+
 var arrayOfSearch = Constants.MY_SEARCH.Search;
 var myKey = Constants.MY_KEY;
 var testMovie = Constants.MY_MOVIE;
 var searchButtun = document.getElementById('search');
-todo(arrayOfSearch);
+// todo(arrayOfSearch);
 
 // fetch('https://www.omdbapi.com/?apikey=445a0d29&s=batman')
 //   .then(res => res.json())
 //   .then(data => todo(data))
+searchButtun.addEventListener("click",searchMovies);
 
-function  todo(data){
-  arrayOfSearch.forEach(movie => {
-  displayCardCustom(movie);
-});
-  }
-
-var buttons = document.querySelectorAll(".readMore");
-
-
-// DEBUT MODAL
-buttons.forEach(button => {
-  button.addEventListener("click",launchModal)
-  
-});
-
-
-
-
-// Get the modal
-var modal = document.getElementById("myModal");
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-function launchModal(event) {
-fetch(`https://www.omdbapi.com/?apikey=445a0d29&i=${event.target.id}`)
+//searchContent
+function searchMovies(event) {
+  let searchContent = document.getElementById('searchContent').value;
+  fetch(`https://www.omdbapi.com/?apikey=${myKey}&s=${searchContent}`)
   .then(res => res.json())
-  .then(data => displayModalCustom(data,modal))
-  // console.log(event.target.id);
-  // displayModalCustom(testMovie,modal);
+  .then(data => displayMovies(data))
+  .then(modalModal)
+  .then(observerObserver)
+}
 
+function  displayMovies(data){
+  //on suprime d'abord
+  let moviesToDelete = document.querySelectorAll('.movie')
+  moviesToDelete.forEach(movieCard => {
+    movieCard.remove();
+  });
+
+
+  var arrayOfSearch = Constants.MY_SEARCH.Search;
+  data.Search.forEach(movie => {
+    displayCardCustom(movie);
+  });
 }
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
+
+
+
+
+function observerObserver() {
+  //debut observer
+let observer = new IntersectionObserver(function (observables) {
+  observables.forEach(observable => {
+    if (observable.intersectionRatio > 0.5) {
+      observable.target.classList.remove('not-visible');
+      // observer.unobserve(observable.target)
+      // console.log('item visible');
+    } else {
+      observable.target.classList.add('not-visible');
+    }
+  });
+}, {
+  threshold: [0.5]
+})
+
+let items = document.querySelectorAll('.observer')
+items.forEach(item => {
+  item.classList.add('not-visible');
+  observer.observe(item);
+});
+//fin observer
 }
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
+
+
+
+function modalModal(){
+  console.log("ici");
+  var buttons = document.querySelectorAll(".readMore");
+  // DEBUT MODAL
+  buttons.forEach(button => {
+    button.addEventListener("click",launchModal)  
+  });
+  // Get the modal
+  var modal = document.getElementById("myModal");
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+  function launchModal(event) {
+  fetch(`https://www.omdbapi.com/?apikey=${myKey}&i=${event.target.id}`)
+    .then(res => res.json())
+    .then(data => displayModalCustom(data,modal))
+    // console.log(event.target.id);
+    // displayModalCustom(testMovie,modal);
+  console.log("toto");
+  }
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
     modal.style.display = "none";
   }
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+  //FIN MODAL
 }
-//FIN MODAL
-
 
 //TODO
-//creer la requette api
+
+//creer la requette api de recherche
 //créer l'event listener qui lance la requete
-//crer l'affichage pour toutes les réponses
+//crere l'affichage pour toutes les réponses
 //faire le scroll
-//event listener qui lance la modal
-//delete modal content when close modal
